@@ -38,10 +38,14 @@ function updateMuscles(muscleGroup) {
 
   if (poison !== 'individual') {
     setMuscles([muscleGroup])
+    setShowModal(false)
     return
   }
 
   setMuscles([...muscles, muscleGroup])
+  if (muscles.length === 2) {
+    setShowModal(false)
+  }
 
 }
 
@@ -68,6 +72,7 @@ useEffect(() => {
             <button 
               onClick={() => {
                 setPoison(type)
+                setMuscles([])
               }}
               className={'bg-slate-950 border border-blue-400 duration-200 hover:border-blue-600 py-3 rounded-lg cursor-pointer' + (type === poison ? ' border-blue-600' : ' border-blue-400')} 
               key={typeIndex}>
@@ -87,7 +92,7 @@ useEffect(() => {
         />
         <div className='bg-slate-950 border border-solid border-blue-400 hover:border-blue-600 rounded-lg flex flex-col'>
           <button onClick={toggleModal} className='relative p-3 flex items-center justify-center cursor-pointer'>
-            <p>Select muscle groups</p>
+            <p className='capitalize'>{muscles.length == 0 ? 'Select muscle groups' : muscles.join(' ')}</p>
             <i className="fa-solid absolute right-3 top-1/2 -translate-y-1/2 fa-caret-down"></i>
           </button>
           {showModal && (
