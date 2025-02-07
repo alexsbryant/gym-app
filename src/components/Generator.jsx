@@ -19,15 +19,15 @@ const Generator = () => {
 const [showModal, setShowModal] = useState(false)
 const [poison, setPoison] = useState('individual')
 const [muscles, setMuscles] = useState([])
-const [goals, setGoals] = useState('strength_power')
+const [goal, setGoal] = useState('strength_power')
 
 function toggleModal() {
   setShowModal(!showModal)
 }
 
 useEffect(() => {
-  console.log(`current type is: ${poison}`)
-}, [poison])
+  console.log(`current type is: ${poison}, goal: ${goal}`)
+}, [poison, goal])
 
   return (
     <section>
@@ -82,7 +82,12 @@ useEffect(() => {
         />
         <div className='grid grid-cols-3 gap-4'>
           {Object.keys(SCHEMES).map((scheme, schemeIndex) => (
-            <button className='bg-slate-950 border border-blue-400 duration-200 hover:border-blue-600 py-3 rounded-lg cursor-pointer' key={schemeIndex}>
+            <button 
+              onClick={() => {
+                setGoal(scheme)
+              }}
+              className={'bg-slate-950 border border-blue-400 duration-200 hover:border-blue-600 py-3 rounded-lg cursor-pointer' + (scheme === goal ? ' border-blue-600' : ' border-blue-400')} 
+              key={schemeIndex}>
               <p className='capitalize'>{scheme.replaceAll('_', " ")}</p>
             </button>
           ))}
