@@ -25,9 +25,29 @@ function toggleModal() {
   setShowModal(!showModal)
 }
 
+function updateMuscles(muscleGroup) {
+
+  if (muscles.includes(muscleGroup)) {
+    setMuscles(muscles.filter(val => val !== muscleGroup))
+    return
+  }
+
+  if (muscles.length > 2) {
+    return
+  }
+
+  if (poison !== 'individual') {
+    setMuscles([muscleGroup])
+    return
+  }
+
+  setMuscles([...muscles, muscleGroup])
+
+}
+
 useEffect(() => {
-  console.log(`current type is: ${poison}, goal: ${goal}`)
-}, [poison, goal])
+  console.log(`current type is: ${poison}, muscles: ${muscles}, goal: ${goal}`)
+}, [poison, goal, muscles])
 
   return (
     <section>
@@ -51,7 +71,9 @@ useEffect(() => {
               }}
               className={'bg-slate-950 border border-blue-400 duration-200 hover:border-blue-600 py-3 rounded-lg cursor-pointer' + (type === poison ? ' border-blue-600' : ' border-blue-400')} 
               key={typeIndex}>
-              <p className='capitalize'>{type.replaceAll('_', " ")}</p>
+              <p className='capitalize'>
+                {type.replaceAll('_', " ")}
+              </p>
             </button>
           ))}
         </div>
@@ -69,7 +91,22 @@ useEffect(() => {
             <i className="fa-solid absolute right-3 top-1/2 -translate-y-1/2 fa-caret-down"></i>
           </button>
           {showModal && (
-            <div>modal</div>
+            <div className='flex flex-col px-3 pb-3'>
+              {(poison === 'individual' ? WORKOUTS[poison] : Object.keys(WORKOUTS[poison])).map((muscleGroup, muscleGroupIndex) => {
+                return (
+                  <button 
+                    onClick={() => {
+                      updateMuscles(muscleGroup)
+                    }}
+                    key={muscleGroupIndex} 
+                    className={'hover:text-blue-400 duration-200' + (muscles.includes(muscleGroup) ? ' text-blue-400' : ' ')}>
+                      <p className='uppercase'>
+                        {muscleGroup.replaceAll('_', " ")}
+                      </p>
+                  </button>
+                )
+              })}
+            </div>
           )}
         </div>
 
